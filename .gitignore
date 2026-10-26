@@ -14,6 +14,7 @@
 !/WPA3 Attacks Dataset/WPA3 Denial of Service attacks/Deauthentication attack/lab_features.py
 !/WPA3 Attacks Dataset/WPA3 Denial of Service attacks/Deauthentication attack/lab_train.py
 !/WPA3 Attacks Dataset/WPA3 Denial of Service attacks/Deauthentication attack/train.py
+!/WPA3 Attacks Dataset/WPA3 Denial of Service attacks/Deauthentication attack/wids_model.joblib
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
