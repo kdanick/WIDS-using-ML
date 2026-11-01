@@ -16,6 +16,14 @@
 !/WPA3 Attacks Dataset/WPA3 Denial of Service attacks/Deauthentication attack/train.py
 !/WPA3 Attacks Dataset/WPA3 Denial of Service attacks/Deauthentication attack/wids_model.joblib
 
+# Keep selected AWID3 Deauth evaluation files.
+!/AWID3_Dataset_CSV/
+!/AWID3_Dataset_CSV/CSV/
+!/AWID3_Dataset_CSV/CSV/1.Deauth/
+!/AWID3_Dataset_CSV/CSV/1.Deauth/eval_awid3.py
+!/AWID3_Dataset_CSV/CSV/1.Deauth/wids_model.joblib
+!/AWID3_Dataset_CSV/CSV/1.Deauth/AWID3_confusion_matrix.png
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

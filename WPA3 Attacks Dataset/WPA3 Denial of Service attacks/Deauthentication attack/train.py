@@ -48,8 +48,8 @@ def run(name, columns, model):
     plt.savefig(name.replace(" ", "_") + ".png", dpi=200)
     return model
 
-all_feats = ["total_frames", "deauth_frames", "deauth_ratio", "avg_len", "retry_ratio"]
-no_deauth = ["total_frames", "avg_len", "retry_ratio"]
+all_feats = ["total_frames", "deauth_frames", "deauth_ratio", "avg_signal", "avg_len", "retry_ratio"]
+no_deauth = ["total_frames", "avg_signal", "avg_len", "retry_ratio"]
 
 rf = run("RF all features", all_feats, RandomForestClassifier(n_estimators=100, random_state=42))
 run("DT all features", all_feats, DecisionTreeClassifier(max_depth=4, random_state=42))

@@ -1,4 +1,4 @@
-import sys, time, argparse
+import time, argparse
 from collections import Counter
 import joblib, pandas as pd
 from scapy.all import PcapReader
@@ -12,19 +12,20 @@ ap.add_argument("--live", action="store_true", help="wait 1s per window")
 args = ap.parse_args()
 
 model = joblib.load("wids_model.joblib")
-FEATS = ["total_frames", "deauth_frames", "deauth_ratio", "avg_len", "retry_ratio"]
+FEATS = ["total_frames", "deauth_frames", "deauth_ratio", "avg_signal", "avg_len", "retry_ratio"]
 blocked = set()
 
 def classify(sec, total, deauth, sigs, lens, retries, senders):
-    f = pd.DataFrame([{
+    row = {
         "total_frames": total,
         "deauth_frames": deauth,
         "deauth_ratio": deauth / total,
-        "avg_signal": sum(sigs) / len(sigs) if sigs else -60,
         "avg_len": sum(lens) / len(lens),
         "retry_ratio": retries / total,
-    }])[FEATS]
-    if model.predict(f)[0] == 1:
+    }
+    row["avg_signal"] = sum(sigs) / len(sigs) if sigs else -60   # fallback if a capture has no signal data
+    pred = model.predict(pd.DataFrame([row])[FEATS])[0]
+    if pred == 1:
         mac, count = senders.most_common(1)[0] if senders else ("unknown", 0)
         print(f"[ALERT] t={sec}s deauth flood: {deauth} deauth frames, top sender {mac}")
         if mac not in blocked:
