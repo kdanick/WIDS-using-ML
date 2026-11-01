@@ -4,6 +4,8 @@
 
 # Keep the project overview.
 !/README.md
+!/A1 poster · Catching the deauth flood.png
+!/WIDS Poster.pdf
 
 # Keep selected WPA3 deauthentication files.
 !/WPA3 Attacks Dataset/
