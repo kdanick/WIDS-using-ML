@@ -5,6 +5,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, ConfusionMatrixDisplay
 
+# Plot and save a confusion matrix with accuracy and interpretation notes.
 def save_cm(y_true, y_pred, title, subtitle, filename):
     cm = confusion_matrix(y_true, y_pred, labels=[0, 1])
     acc = accuracy_score(y_true, y_pred)

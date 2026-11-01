@@ -2,6 +2,7 @@ import glob, pandas as pd, joblib
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, ConfusionMatrixDisplay
 
+# Save a labeled confusion-matrix plot with accuracy and interpretation notes.
 def save_cm(y_true, y_pred, title, subtitle, filename):
     cm = confusion_matrix(y_true, y_pred, labels=[0, 1])
     acc = accuracy_score(y_true, y_pred)
@@ -50,7 +51,7 @@ feat.to_csv("features_awid3.csv")
 print("Windows:", len(feat))
 print(feat["label"].value_counts())
 
-# 4. Test the saved model (no retraining)
+# 4. Evaluate the saved model on AWID3 without retraining it
 FEATS = ["total_frames", "deauth_frames", "deauth_ratio", "avg_signal", "avg_len", "retry_ratio"]
 m = joblib.load("wids_model.joblib")
 p = m.predict(feat[FEATS])
@@ -58,6 +59,7 @@ print("\n=== Model on AWID3 (no retraining) ===")
 print("Accuracy:", round(accuracy_score(feat["label"], p), 4))
 print(confusion_matrix(feat["label"], p, labels=[0, 1]))
 print(classification_report(feat["label"], p, labels=[0, 1], target_names=["normal", "attack"], zero_division=0))
+# Inspect the windows where the model's prediction differs from the known label.
 wrong = feat.assign(pred=p)[feat["label"] != p]
 print("Wrong windows:", len(wrong))
 print(wrong[["total_frames", "deauth_frames", "label", "pred"]])

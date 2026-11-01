@@ -4,6 +4,7 @@ import joblib, pandas as pd
 from scapy.all import PcapReader
 from scapy.layers.dot11 import Dot11, RadioTap
 
+# Configure the capture, time range, and optional real-time pacing.
 ap = argparse.ArgumentParser()
 ap.add_argument("pcap")
 ap.add_argument("--start", type=int, default=0, help="start second")
@@ -11,10 +12,12 @@ ap.add_argument("--seconds", type=int, default=60, help="how many seconds to pro
 ap.add_argument("--live", action="store_true", help="wait 1s per window")
 args = ap.parse_args()
 
+# Load the trained classifier and prepare per-run alert tracking.
 model = joblib.load("wids_model.joblib")
 FEATS = ["total_frames", "deauth_frames", "deauth_ratio", "avg_signal", "avg_len", "retry_ratio"]
 blocked = set()
 
+# Convert one second of captured traffic into the model's features and report its prediction.
 def classify(sec, total, deauth, sigs, lens, retries, senders):
     row = {
         "total_frames": total,
@@ -38,10 +41,12 @@ def classify(sec, total, deauth, sigs, lens, retries, senders):
     if args.live:
         time.sleep(1)
 
+# Track the current capture window and its per-second traffic measurements.
 t0, cur = None, None
 total = deauth = retries = 0
 sigs, lens, senders = [], [], Counter()
 
+# Read packets from the capture, finalize each window, and accumulate its features.
 for pkt in PcapReader(args.pcap):
     if not pkt.haslayer(Dot11):
         continue
@@ -72,5 +77,6 @@ for pkt in PcapReader(args.pcap):
         deauth += 1
         senders[d.addr2] += 1
 
+# Classify the last window, which has no following packet to trigger a window change.
 if total:
     classify(cur, total, deauth, sigs, lens, retries, senders)
